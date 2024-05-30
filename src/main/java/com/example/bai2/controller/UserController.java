@@ -3,6 +3,7 @@ package com.example.bai2.controller;
 import com.example.bai2.dto.request.UserCreationRequest;
 import com.example.bai2.entity.User;
 import com.example.bai2.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class UserController {
     }
 
     @PostMapping("")
-    User createUser(@RequestBody UserCreationRequest request) {
+    User createUser(@Valid @RequestBody UserCreationRequest request) {
         return userService.createUser(request);
     }
 

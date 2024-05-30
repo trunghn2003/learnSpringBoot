@@ -1,9 +1,12 @@
 package com.example.bai2.dto.request;
 
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 
 public class UserCreationRequest {
     private  String username;
+    @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
     private String fristName;
     private String lastName;
