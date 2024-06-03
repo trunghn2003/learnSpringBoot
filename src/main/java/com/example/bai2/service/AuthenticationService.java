@@ -16,7 +16,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationService {
     UserRepository userRepository;
-    public boolean authenticate(AuthenticationRequest request){
+
+    public boolean authenticate(AuthenticationRequest request) {
         var user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXITS));
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);

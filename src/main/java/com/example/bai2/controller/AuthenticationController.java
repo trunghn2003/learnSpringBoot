@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 @FieldDefaults(makeFinal = true, level = lombok.AccessLevel.PRIVATE)
 public class AuthenticationController {
     AuthenticationService authenticationService;
+
     @PostMapping("/login")
-    public ApiResponse<AuthenticationResponse> login(@RequestBody AuthenticationRequest request){
+    public ApiResponse<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
         boolean authenticated = authenticationService.authenticate(request);
         return ApiResponse.<AuthenticationResponse>builder()
                 .code(200)
