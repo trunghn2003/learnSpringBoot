@@ -15,7 +15,7 @@ import lombok.experimental.FieldDefaults;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 // convert sang json, key nao null thi ko cho vao
 public class ApiResponse <T> {
-     int code;
+     int code = 1000;
      String message;
      T result ;
 
