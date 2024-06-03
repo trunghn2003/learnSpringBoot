@@ -1,5 +1,6 @@
 package com.example.bai2.controller;
 
+import com.example.bai2.dto.request.ApiResponse;
 import com.example.bai2.dto.request.UserCreationRequest;
 import com.example.bai2.entity.User;
 import com.example.bai2.service.UserService;
@@ -19,8 +20,12 @@ public class UserController {
     }
 
     @PostMapping("")
-    User createUser(@Valid @RequestBody UserCreationRequest request) {
-        return userService.createUser(request);
+    ApiResponse<User> createUser(@Valid @RequestBody UserCreationRequest request) {
+      ApiResponse<User> apiResponse = new ApiResponse<>();
+      apiResponse.setCode(200);
+      apiResponse.setMessage("Success");
+      apiResponse.setResult(userService.createUser(request));
+      return apiResponse;
     }
 
     @GetMapping("")

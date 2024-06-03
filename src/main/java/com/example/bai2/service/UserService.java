@@ -2,6 +2,8 @@ package com.example.bai2.service;
 
 import com.example.bai2.dto.request.UserCreationRequest;
 import com.example.bai2.entity.User;
+import com.example.bai2.exception.AppException;
+import com.example.bai2.exception.ErrorCode;
 import com.example.bai2.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,7 @@ public class UserService {
     public User createUser(UserCreationRequest request) {
         User user = new User();
         if(userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username already exists");
+            throw new AppException(ErrorCode.USER_EXITS);
         }
         user.setUsername(request.getUsername());
         user.setPassword(request.getPassword());
@@ -33,6 +35,7 @@ public class UserService {
     }
 
     public User getUserById(String id) {
+        
         return userRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("User not found"));
     }

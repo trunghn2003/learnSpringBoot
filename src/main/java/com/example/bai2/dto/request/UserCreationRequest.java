@@ -1,12 +1,14 @@
 package com.example.bai2.dto.request;
 
+import com.example.bai2.exception.ErrorCode;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
 public class UserCreationRequest {
+    @Size(min = 6, message = "USERNAME_INVALID")
     private  String username;
-    @Size(min = 6, message = "Password must be at least 6 characters")
+    @Size(min = 6, message = "PASSWORD_INVALID")
     private String password;
     private String fristName;
     private String lastName;
