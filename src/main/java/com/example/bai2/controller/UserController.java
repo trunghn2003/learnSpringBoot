@@ -2,6 +2,8 @@ package com.example.bai2.controller;
 
 import com.example.bai2.dto.request.ApiResponse;
 import com.example.bai2.dto.request.UserCreationRequest;
+import com.example.bai2.dto.request.UserUpdateReQuest;
+import com.example.bai2.dto.response.UserResponse;
 import com.example.bai2.entity.User;
 import com.example.bai2.service.UserService;
 import jakarta.validation.Valid;
@@ -15,13 +17,14 @@ import java.util.List;
 public class UserController {
     @Autowired
     private final UserService userService;
+
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @PostMapping("")
-    ApiResponse<User> createUser(@Valid @RequestBody UserCreationRequest request) {
-      ApiResponse<User> apiResponse = new ApiResponse<>();
+    ApiResponse<UserResponse> createUser(@Valid @RequestBody UserCreationRequest request) {
+      ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
       apiResponse.setCode(200);
       apiResponse.setMessage("Success");
       apiResponse.setResult(userService.createUser(request));
@@ -29,15 +32,15 @@ public class UserController {
     }
 
     @GetMapping("")
-    List<User> getAllUsers() {
+    List<UserResponse> getAllUsers() {
         return userService.getAllUsers();
     }
     @GetMapping("/{id}")
-    User getUserById(@PathVariable String id) {
+    UserResponse getUserById(@PathVariable String id) {
         return userService.getUserById(id);
     }
     @PutMapping("/{id}")
-    User updateUser(@PathVariable String id, @RequestBody UserCreationRequest request) {
+    UserResponse updateUser(@PathVariable String id, @RequestBody UserUpdateReQuest request) {
         return userService.updateUser(id, request);
     }
     @DeleteMapping("/{id}")
