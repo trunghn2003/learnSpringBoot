@@ -39,12 +39,14 @@ public class SecurityConfig {
 
                         .anyRequest()
                         .authenticated()
+
         );
         // dang ky authentication provider
         http.oauth2ResourceServer(oauth2 ->
                 oauth2.jwt(jwt ->
                         jwt.decoder(jwtDecoder())
                 )
+                        .authenticationEntryPoint(new JwtAuthenticatinEntryPoint())
         );
 
         http.csrf(AbstractHttpConfigurer::disable);
