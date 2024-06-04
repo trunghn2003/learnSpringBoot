@@ -4,6 +4,7 @@ import com.example.bai2.dto.request.UserCreationRequest;
 import com.example.bai2.dto.request.UserUpdateReQuest;
 import com.example.bai2.dto.response.UserResponse;
 import com.example.bai2.entity.User;
+import com.example.bai2.enums.Role;
 import com.example.bai2.exception.AppException;
 import com.example.bai2.exception.ErrorCode;
 import com.example.bai2.mapper.UserMapper;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -35,6 +37,9 @@ public class UserService {
         User user = userMapper.toUser(request);
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        HashSet<String> roles =  new HashSet<>();
+        roles.add(Role.USER.name());
+        user.setRoles(roles);
         return userMapper.toUserResponse(userRepository.save(user));
     }
 

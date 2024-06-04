@@ -1,9 +1,12 @@
 package com.example.bai2.dto.response;
 
+import com.example.bai2.entity.User;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -13,8 +16,8 @@ import java.time.LocalDate;
 public class UserResponse {
      String id;
      String username;
-     String password;
-     String fristName;
+     String firstName; // Corrected the typo from "fristName" to "firstName"
      String lastName;
      LocalDate dob;
+     Set<String> roles;
 }
