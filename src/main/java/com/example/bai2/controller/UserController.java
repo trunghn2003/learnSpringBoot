@@ -1,51 +1,55 @@
 package com.example.bai2.controller;
-
 import com.example.bai2.dto.request.ApiResponse;
 import com.example.bai2.dto.request.UserCreationRequest;
 import com.example.bai2.dto.request.UserUpdateReQuest;
 import com.example.bai2.dto.response.UserResponse;
-import com.example.bai2.entity.User;
 import com.example.bai2.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class UserController {
-    @Autowired
-    private final UserService userService;
+    UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @PostMapping
+    ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request){
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.createUser(request))
+                .build();
     }
 
-    @PostMapping("")
-    ApiResponse<UserResponse> createUser(@Valid @RequestBody UserCreationRequest request) {
-        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setCode(200);
-        apiResponse.setMessage("Success");
-        apiResponse.setResult(userService.createUser(request));
-        return apiResponse;
-    }
+    @GetMapping
+    @PreAuthorize("hasRole('update-data')")
+    ApiResponse<List<UserResponse>> getUsers(){
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    @GetMapping("")
-    ApiResponse<List<UserResponse>> getAllUsers() {
+        log.info("Username: {}", authentication.getName());
+        authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
+
         return ApiResponse.<List<UserResponse>>builder()
                 .result(userService.getAllUsers())
                 .build();
     }
 
-    @GetMapping("/{id}")
-    ApiResponse<UserResponse> getUserById(@PathVariable String id) {
-
+    @GetMapping("/{userId}")
+    ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId){
         return ApiResponse.<UserResponse>builder()
-                .result(userService.getUserById(id))
+                .result(userService.getUserById(userId))
                 .build();
-
     }
+
     @GetMapping("/myInfo")
     ApiResponse<UserResponse> getMyInfo(){
         return ApiResponse.<UserResponse>builder()
@@ -53,17 +57,18 @@ public class UserController {
                 .build();
     }
 
-    @PutMapping("/{id}")
-    ApiResponse<UserResponse> updateUser(@PathVariable String id, @RequestBody UserUpdateReQuest request) {
-        return ApiResponse.<UserResponse>builder()
-                .result(userService.updateUser(id, request))
+    @DeleteMapping("/{userId}")
+    ApiResponse<String> deleteUser(@PathVariable String userId){
+        userService.deleteUser(userId);
+        return ApiResponse.<String>builder()
+                .result("User has been deleted")
                 .build();
-
     }
 
-    @DeleteMapping("/{id}")
-    void deleteUser(@PathVariable String id) {
-        userService.deleteUser(id);
+    @PutMapping("/{userId}")
+    ApiResponse<UserResponse> updateUser(@PathVariable String userId, @RequestBody UserUpdateReQuest request){
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.updateUser(userId, request))
+                .build();
     }
-
 }

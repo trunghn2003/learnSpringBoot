@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
-
+import java.util.List;
 @Data   // Lombok annotation to generate all the boilerplate code
 @NoArgsConstructor
     @AllArgsConstructor
@@ -18,6 +18,7 @@ public class UserCreationRequest {
     private String fristName;
     private String lastName;
     private LocalDate dob;
+    List<String> roles;
 
 
 }

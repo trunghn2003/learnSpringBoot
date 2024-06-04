@@ -5,6 +5,7 @@ import com.example.bai2.dto.request.UserUpdateReQuest;
 import com.example.bai2.dto.response.UserResponse;
 import com.example.bai2.entity.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 
@@ -12,7 +13,9 @@ import org.mapstruct.MappingTarget;
 public interface UserMapper {
     User toUser(UserCreationRequest request);
 
-    void updateUser(@MappingTarget User user, UserUpdateReQuest request);
+    @Mapping(target = "roles", ignore = true)
 
+    void updateUser(@MappingTarget User user, UserUpdateReQuest request);
+    @Mapping(target = "roles", ignore = true)
     UserResponse toUserResponse(User user);
 }

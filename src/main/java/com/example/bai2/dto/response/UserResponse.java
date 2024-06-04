@@ -1,5 +1,6 @@
 package com.example.bai2.dto.response;
 
+import com.example.bai2.entity.Role;
 import com.example.bai2.entity.User;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -19,5 +20,5 @@ public class UserResponse {
      String firstName; // Corrected the typo from "fristName" to "firstName"
      String lastName;
      LocalDate dob;
-     Set<String> roles;
+     Set<RoleResponse> roles;
 }

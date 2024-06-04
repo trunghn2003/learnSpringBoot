@@ -1,10 +1,12 @@
 package com.example.bai2.dto.request;
 
 
+import jakarta.validation.constraints.Negative;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -16,4 +18,5 @@ public class UserUpdateReQuest {
     String firstName;
     String lastName;
     LocalDate dob;
+    List<String> roles;
 }
