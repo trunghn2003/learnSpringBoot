@@ -1,7 +1,8 @@
 package com.example.bai2.controller;
+
 import com.example.bai2.dto.request.ApiResponse;
 import com.example.bai2.dto.request.UserCreationRequest;
-import com.example.bai2.dto.request.UserUpdateReQuest;
+import com.example.bai2.dto.request.UserUpdateRequest;
 import com.example.bai2.dto.response.UserResponse;
 import com.example.bai2.service.UserService;
 import jakarta.validation.Valid;
@@ -9,7 +10,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +31,6 @@ public class UserController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('update-data')")
     ApiResponse<List<UserResponse>> getUsers(){
         var authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -39,14 +38,14 @@ public class UserController {
         authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
 
         return ApiResponse.<List<UserResponse>>builder()
-                .result(userService.getAllUsers())
+                .result(userService.getUsers())
                 .build();
     }
 
     @GetMapping("/{userId}")
     ApiResponse<UserResponse> getUser(@PathVariable("userId") String userId){
         return ApiResponse.<UserResponse>builder()
-                .result(userService.getUserById(userId))
+                .result(userService.getUser(userId))
                 .build();
     }
 
@@ -66,7 +65,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    ApiResponse<UserResponse> updateUser(@PathVariable String userId, @RequestBody UserUpdateReQuest request){
+    ApiResponse<UserResponse> updateUser(@PathVariable String userId, @RequestBody UserUpdateRequest request){
         return ApiResponse.<UserResponse>builder()
                 .result(userService.updateUser(userId, request))
                 .build();

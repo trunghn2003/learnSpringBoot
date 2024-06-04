@@ -1,4 +1,5 @@
 package com.example.bai2.dto.request;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -6,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class IntrospectRequest {
     String token;
 }

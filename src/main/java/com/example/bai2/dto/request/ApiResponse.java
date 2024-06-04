@@ -1,23 +1,18 @@
 package com.example.bai2.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-// convert sang json, key nao null thi ko cho vao
-public class ApiResponse<T> {
-    int code = 1000;
-    String message;
-    T result;
-
-
+public class ApiResponse <T> {
+    @Builder.Default
+    private int code = 1000;
+    private String message;
+    private T result;
 }

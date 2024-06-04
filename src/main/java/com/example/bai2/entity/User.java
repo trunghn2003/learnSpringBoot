@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.util.Set;
+
 @Getter
 @Setter
 @Builder
@@ -20,8 +21,9 @@ public class User {
     String username;
     String password;
     String firstName;
-    String lastName;
     LocalDate dob;
+    String lastName;
+
     @ManyToMany
     Set<Role> roles;
 }

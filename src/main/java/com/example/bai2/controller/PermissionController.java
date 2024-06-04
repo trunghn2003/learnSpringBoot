@@ -2,37 +2,31 @@ package com.example.bai2.controller;
 
 import com.example.bai2.dto.request.ApiResponse;
 import com.example.bai2.dto.request.PermissionRequest;
-import com.example.bai2.dto.request.UserCreationRequest;
-import com.example.bai2.dto.request.UserUpdateReQuest;
 import com.example.bai2.dto.response.PermissionResponse;
-import com.example.bai2.dto.response.UserResponse;
 import com.example.bai2.service.PermissionService;
-import com.example.bai2.service.UserService;
-import jakarta.validation.Valid;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/permissons")
+@RequestMapping("/permissions")
 @RequiredArgsConstructor
-@FieldDefaults(makeFinal = true, level = lombok.AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class PermissionController {
-
     PermissionService permissionService;
 
-    @PostMapping()
-    ApiResponse<PermissionResponse> create(@RequestBody PermissionRequest request) {
-        return ApiResponse.<PermissionResponse>
-                builder()
+    @PostMapping
+    ApiResponse<PermissionResponse> create(@RequestBody PermissionRequest request){
+        return ApiResponse.<PermissionResponse>builder()
                 .result(permissionService.create(request))
                 .build();
     }
+
     @GetMapping
     ApiResponse<List<PermissionResponse>> getAll(){
         return ApiResponse.<List<PermissionResponse>>builder()
@@ -45,6 +39,4 @@ public class PermissionController {
         permissionService.delete(permission);
         return ApiResponse.<Void>builder().build();
     }
-
-
 }

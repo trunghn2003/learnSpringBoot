@@ -2,8 +2,8 @@ package com.example.bai2.service;
 
 import com.example.bai2.dto.request.AuthenticationRequest;
 import com.example.bai2.dto.request.IntrospectRequest;
-import com.example.bai2.dto.request.IntrospectResponse;
 import com.example.bai2.dto.response.AuthenticationResponse;
+import com.example.bai2.dto.response.IntrospectResponse;
 import com.example.bai2.entity.User;
 import com.example.bai2.exception.AppException;
 import com.example.bai2.exception.ErrorCode;
@@ -41,7 +41,6 @@ public class AuthenticationService {
     @Value("${jwt.signerKey}")
     protected String SIGNER_KEY;
 
-
     public IntrospectResponse introspect(IntrospectRequest request)
             throws JOSEException, ParseException {
         var token = request.getToken();
@@ -60,7 +59,6 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request){
-
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         var user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
@@ -108,9 +106,9 @@ public class AuthenticationService {
     private String buildScope(User user){
         StringJoiner stringJoiner = new StringJoiner(" ");
 
-        if (!CollectionUtils.isEmpty(user.getRoles()))
+         if (!CollectionUtils.isEmpty(user.getRoles()))
             user.getRoles().forEach(role -> {
-                stringJoiner.add(role.getName());
+                stringJoiner.add("ROLE_" + role.getName());
                 if (!CollectionUtils.isEmpty(role.getPermissions()))
                     role.getPermissions()
                             .forEach(permission -> stringJoiner.add(permission.getName()));

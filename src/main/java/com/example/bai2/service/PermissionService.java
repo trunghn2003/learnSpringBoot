@@ -3,7 +3,7 @@ package com.example.bai2.service;
 import com.example.bai2.dto.request.PermissionRequest;
 import com.example.bai2.dto.response.PermissionResponse;
 import com.example.bai2.entity.Permission;
-import com.example.bai2.mapper.PermissonMapper;
+import com.example.bai2.mapper.PermissionMapper;
 import com.example.bai2.repository.PermissionRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -19,24 +19,20 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PermissionService {
     PermissionRepository permissionRepository;
-    PermissonMapper permissonMapper;
+    PermissionMapper permissionMapper;
 
-    public PermissionResponse create(PermissionRequest request) {
-        Permission permission = permissonMapper.toPermisson(request);
-        permissionRepository.save(permission);
-        return permissonMapper.toPermissonResponse(permission);
+    public PermissionResponse create(PermissionRequest request){
+        Permission permission = permissionMapper.toPermission(request);
+        permission = permissionRepository.save(permission);
+        return permissionMapper.toPermissionResponse(permission);
     }
 
-    public List<PermissionResponse> getAll() {
-        List<Permission> permissions = permissionRepository.findAll();
-        return permissions.stream().map(
-                permissonMapper::toPermissonResponse
-        ).toList();
-
+    public List<PermissionResponse> getAll(){
+        var permissions = permissionRepository.findAll();
+        return permissions.stream().map(permissionMapper::toPermissionResponse).toList();
     }
 
-    public void delete(String name) {
-        permissionRepository.deleteById(name);
-
+    public void delete(String permission){
+        permissionRepository.deleteById(permission);
     }
 }

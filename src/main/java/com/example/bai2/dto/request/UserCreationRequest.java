@@ -1,24 +1,23 @@
 package com.example.bai2.dto.request;
 
-import com.example.bai2.exception.ErrorCode;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
-import java.util.List;
-@Data   // Lombok annotation to generate all the boilerplate code
+
+@Data
 @NoArgsConstructor
-    @AllArgsConstructor
+@AllArgsConstructor
 @Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserCreationRequest {
-    @Size(min = 6, message = "USERNAME_INVALID")
-    private  String username;
-    @Size(min = 6, message = "PASSWORD_INVALID")
-    private String password;
-    private String fristName;
-    private String lastName;
-    private LocalDate dob;
-    List<String> roles;
+    @Size(min = 3,message = "USERNAME_INVALID")
+    String username;
 
-
+    @Size(min = 8, message = "INVALID_PASSWORD")
+    String password;
+    String firstName;
+    String lastName;
+    LocalDate dob;
 }
