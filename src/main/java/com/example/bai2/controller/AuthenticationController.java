@@ -1,9 +1,6 @@
 package com.example.bai2.controller;
 
-import com.example.bai2.dto.request.ApiResponse;
-import com.example.bai2.dto.request.AuthenticationRequest;
-import com.example.bai2.dto.request.IntrospectRequest;
-import com.example.bai2.dto.request.LogoutRequest;
+import com.example.bai2.dto.request.*;
 import com.example.bai2.dto.response.AuthenticationResponse;
 import com.example.bai2.dto.response.IntrospectResponse;
 import com.example.bai2.service.AuthenticationService;
@@ -47,6 +44,14 @@ public class AuthenticationController {
         authenticationService.logout(request);
         return ApiResponse.<Void>builder()
 
+                .build();
+    }
+    @PostMapping("/refresh")
+    ApiResponse<AuthenticationResponse> refreshToken(@RequestBody RefreshRequest request)
+            throws ParseException, JOSEException {
+        var result = authenticationService.refreshToken(request);
+        return ApiResponse.<AuthenticationResponse>builder()
+                .result(result)
                 .build();
     }
 }

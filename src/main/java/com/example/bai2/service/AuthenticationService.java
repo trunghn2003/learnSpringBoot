@@ -1,7 +1,5 @@
 package com.example.bai2.service;
-import com.example.bai2.dto.request.AuthenticationRequest;
-import com.example.bai2.dto.request.IntrospectRequest;
-import com.example.bai2.dto.request.LogoutRequest;
+import com.example.bai2.dto.request.*;
 import com.example.bai2.dto.response.AuthenticationResponse;
 import com.example.bai2.dto.response.IntrospectResponse;
 import com.example.bai2.entity.InvalidatedToken;
@@ -119,6 +117,26 @@ public class AuthenticationService {
             log.error("Cannot create token", e);
             throw new RuntimeException(e);
         }
+    }
+    public AuthenticationResponse refreshToken(RefreshRequest request) throws ParseException, JOSEException {
+        var signedJWT = verifyToken(request.getToken());
+
+        // invalidate token cũ
+        var jit = signedJWT.getJWTClaimsSet().getJWTID();
+        var expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+        InvalidatedToken invalidatedToken = InvalidatedToken.builder()
+                .id(jit)
+                .expiryTime(expiryTime)
+                .build();
+
+        invalidatedTokenRepository.save(invalidatedToken);
+        var token =generateToken(userRepository.findByUsername(signedJWT.getJWTClaimsSet().getSubject()).get());
+        return AuthenticationResponse.builder()
+                .token(token)
+                .authenticated(true)
+                .build();
+
+
     }
 
     private SignedJWT verifyToken(String token) throws JOSEException, ParseException {
