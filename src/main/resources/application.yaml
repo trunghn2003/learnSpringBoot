@@ -7,6 +7,7 @@ server:
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/bai2
+    driverClassName: "com.mysql.cj.jdbc.Driver"
     username: root
     password: root
   jpa:
@@ -19,3 +20,4 @@ jwt:
   signerKey: "+LUlIKJs7FijYDVAduEfpvFhXsKQKEpzkwlXP1HMJDvVSP9l6GWcemINOVWt8qj1"
   valid-duration: 30 #10s
   refreshable-duration: 120 #120s
+
