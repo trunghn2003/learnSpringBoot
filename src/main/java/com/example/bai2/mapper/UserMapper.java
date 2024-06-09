@@ -1,12 +1,13 @@
 package com.example.bai2.mapper;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+
 import com.example.bai2.dto.request.UserCreationRequest;
 import com.example.bai2.dto.request.UserUpdateRequest;
 import com.example.bai2.dto.response.UserResponse;
 import com.example.bai2.entity.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {

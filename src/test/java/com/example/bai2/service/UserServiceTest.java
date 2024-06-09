@@ -1,27 +1,28 @@
 package com.example.bai2.service;
 
-import com.example.bai2.dto.request.UserCreationRequest;
-import com.example.bai2.dto.response.UserResponse;
-import com.example.bai2.entity.User;
-import com.example.bai2.exception.AppException;
-import com.example.bai2.repository.UserRepository;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDate;
+import java.util.Optional;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 
-import java.time.LocalDate;
-import java.util.Optional;
+import com.example.bai2.dto.request.UserCreationRequest;
+import com.example.bai2.dto.response.UserResponse;
+import com.example.bai2.entity.User;
+import com.example.bai2.exception.AppException;
+import com.example.bai2.repository.UserRepository;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @TestPropertySource("/test.properties")
 public class UserServiceTest {
@@ -37,7 +38,7 @@ public class UserServiceTest {
     private LocalDate dob;
 
     @BeforeEach
-    void initData(){
+    void initData() {
         dob = LocalDate.of(1990, 1, 1);
 
         request = UserCreationRequest.builder()
@@ -66,7 +67,7 @@ public class UserServiceTest {
     }
 
     @Test
-    void createUser_validRequest_success(){
+    void createUser_validRequest_success() {
         // GIVEN
         when(userRepository.existsByUsername(anyString())).thenReturn(false);
         when(userRepository.save(any())).thenReturn(user);
@@ -80,43 +81,35 @@ public class UserServiceTest {
     }
 
     @Test
-    void createUser_userExisted_fail(){
+    void createUser_userExisted_fail() {
         // GIVEN
         when(userRepository.existsByUsername(anyString())).thenReturn(true);
 
         // WHEN
-        var exception = assertThrows(AppException.class,
-                () -> userService.createUser(request));
+        var exception = assertThrows(AppException.class, () -> userService.createUser(request));
 
         // THEN
-        Assertions.assertThat(exception.getErrorCode().getCode())
-                .isEqualTo(1002);
+        Assertions.assertThat(exception.getErrorCode().getCode()).isEqualTo(1002);
     }
 
     @Test
     @WithMockUser(username = "john")
-    void getMyInfo_Sucess(){
-        //given
+    void getMyInfo_Sucess() {
+        // given
         when(userRepository.findByUsername(anyString())).thenReturn(Optional.of(user));
-        //when
+        // when
         var response = userService.getMyInfo();
         // then
-        Assertions.assertThat(response.getUsername())
-                .isEqualTo("john")
-                .isEqualTo(user.getUsername());
-
-
+        Assertions.assertThat(response.getUsername()).isEqualTo("john").isEqualTo(user.getUsername());
     }
 
     @Test
     @WithMockUser(username = "john")
-    void getMyInfo_userNotFound_error(){
-        when(userRepository.findByUsername(anyString()))
-                .thenReturn(Optional.ofNullable(null));
+    void getMyInfo_userNotFound_error() {
+        when(userRepository.findByUsername(anyString())).thenReturn(Optional.ofNullable(null));
 
         // WHEN
-        var exception = assertThrows(AppException.class,
-                () -> userService.getMyInfo());
+        var exception = assertThrows(AppException.class, () -> userService.getMyInfo());
 
         Assertions.assertThat(exception.getErrorCode().getCode()).isEqualTo(1005);
     }

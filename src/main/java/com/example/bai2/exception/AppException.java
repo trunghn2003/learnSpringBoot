@@ -1,6 +1,6 @@
 package com.example.bai2.exception;
 
-public class AppException extends RuntimeException{
+public class AppException extends RuntimeException {
 
     public AppException(ErrorCode errorCode) {
         super(errorCode.getMessage());
